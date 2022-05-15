@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/d100"
+    android:layout_margin="@dimen/d10"
+    android:layout_weight="10"
+    android:background="@drawable/white_bordered_rectangle_background"
+    android:orientation="horizontal"
+    android:padding="@dimen/d5">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:cardCornerRadius="@dimen/d10">
+
+        <ImageView
+            android:id="@+id/iv_product_image"
+            android:layout_width="@dimen/d80"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            app:cardCornerRadius="@dimen/d10" />
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:layout_width="@dimen/d0"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_weight="10"
+        android:layout_marginStart="@dimen/d10"
+        android:orientation="vertical"
+        android:weightSum="2">
+
+        <TextView
+            android:id="@+id/tv_product_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:gravity="start"
+            android:maxLines="2"
+            android:textColor="@color/title_product"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_product_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/title_price" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="@dimen/d5"
+        android:orientation="vertical"
+        android:weightSum="10">
+
+        <ImageButton
+            android:id="@+id/btn_add_quantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:background="@drawable/white_bordered_rectangle_background"
+            android:clickable="true"
+            android:foreground="@drawable/custom_ripple_effect"
+            android:src="@drawable/ic_add"
+            android:contentDescription="@string/add" />
+
+        <TextView
+            android:id="@+id/tv_quantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginVertical="@dimen/d5"
+            android:layout_weight="6"
+            android:textColor="@color/title_product"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/btn_remove_quantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:background="@drawable/white_bordered_rectangle_background"
+            android:clickable="true"
+            android:foreground="@drawable/custom_ripple_effect"
+            android:src="@drawable/ic_remove"
+            android:contentDescription="@string/remove" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_product_price_total"
+        android:layout_width="@dimen/d0"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="end"
+        android:layout_marginHorizontal="@dimen/d5"
+        android:layout_weight="3.5"
+        android:textSize="@dimen/s12"
+        android:textColor="@color/title_price"
+        android:textStyle="bold" />
+</LinearLayout>
