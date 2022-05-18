@@ -10,6 +10,7 @@ import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         initAdapter();
-        addSearchListener();
+        addAfterTextChangeListener(binding.edtSearchProduct);
     }
 
     private void setThreadPolicy() {
@@ -92,29 +93,14 @@ public class MainActivity extends AppCompatActivity {
         homeProductAdapter.submitList(newList);
     }
 
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putParcelableArrayList(KeyConstants.SAVED_LIST_INSTANCE, products);
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        binding.searchBar.setVisibility((getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) ? View.GONE : View.VISIBLE);
-        binding.landscapeSearchBar.setVisibility((getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) ? View.GONE : View.VISIBLE);
-        products = savedInstanceState.getParcelableArrayList(KeyConstants.SAVED_LIST_INSTANCE);
-        initAdapter();
-    }
-
     private void initAdapter() {
         homeProductAdapter = new HomeProductAdapter();
         homeProductAdapter.submitList(products);
         binding.recyclerViewListHome.setAdapter(homeProductAdapter);
     }
 
-    private void addSearchListener() {
-        binding.edtSearchProduct.addTextChangedListener(new TextWatcher() {
+    private void addAfterTextChangeListener(EditText editText) {
+        editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -125,23 +111,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (binding.edtSearchProduct.getText() != null) filterData();
-            }
-        });
-        binding.edtSearchProductLandscape.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (binding.edtSearchProductLandscape.getText() != null) filterData();
+                if (editText.getText() != null) filterData();
             }
         });
     }
-
 }

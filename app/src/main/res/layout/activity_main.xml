@@ -19,10 +19,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="10"
-            android:paddingLeft="@dimen/d20"
+            android:paddingStart="@dimen/d20"
+            android:paddingEnd="@dimen/d0"
             android:text="@string/app_name"
             android:textColor="@color/title_action_bar"
-            android:textSize="20sp"
+            android:textSize="@dimen/s20"
             android:textStyle="bold" />
 
         <ImageView
@@ -30,10 +31,10 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:layout_margin="@dimen/d5"
             android:layout_weight="1"
             android:foreground="@drawable/custom_ripple_effect"
             android:padding="@dimen/d10"
-            android:layout_margin="@dimen/d5"
             android:src="@drawable/ic_cart" />
     </LinearLayout>
 
@@ -58,7 +59,7 @@
         <EditText
             android:id="@+id/edt_search_product"
             android:layout_width="@dimen/d0"
-            android:layout_height="@dimen/d50"
+            android:layout_height="@dimen/search_bar_height"
             android:layout_gravity="center"
             android:layout_weight="8"
             android:background="@android:color/transparent"
@@ -70,51 +71,16 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <LinearLayout
+
+        <androidx.recyclerview.widget.RecyclerView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/recyclerView_list_home"
+            android:name="hanu.a2_1801040048.ProductFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:id="@+id/landscape_search_bar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/d30"
-                android:background="@drawable/white_bordered_rectangle_background"
-                android:orientation="horizontal"
-                android:visibility="gone"
-                android:weightSum="10">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="0.5"
-                    android:backgroundTint="@color/icon_color"
-                    android:padding="@dimen/d10"
-                    android:src="@drawable/ic_search" />
-
-                <EditText
-                    android:id="@+id/edt_search_product_landscape"
-                    android:layout_width="@dimen/d0"
-                    android:layout_height="@dimen/d50"
-                    android:layout_gravity="center"
-                    android:layout_weight="8"
-                    android:background="@android:color/transparent"
-                    android:hint="@string/search_bar_hint"
-                    android:textColor="@color/title_product" />
-
-            </LinearLayout>
-            <androidx.recyclerview.widget.RecyclerView xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/recyclerView_list_home"
-                android:name="hanu.a2_1801040048.ProductFragment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:spanCount="2"
-                tools:context=".MainActivity"
-                tools:listitem="@layout/product_item" />
-        </LinearLayout>
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="2"
+            tools:context=".MainActivity"
+            tools:listitem="@layout/product_item" />
     </androidx.core.widget.NestedScrollView>
 
 </LinearLayout>
