@@ -2,9 +2,7 @@ package hanu.a2_1801040048.adapters;
 
 import static hanu.a2_1801040048.utils.Utils.downloadImage;
 import static hanu.a2_1801040048.utils.Utils.priceConvert;
-import static hanu.a2_1801040048.utils.constants.HandlerConstants.handler;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;
@@ -22,6 +20,7 @@ import hanu.a2_1801040048.databinding.ProductItemCartBinding;
 import hanu.a2_1801040048.db.CartManager;
 import hanu.a2_1801040048.models.Product;
 import hanu.a2_1801040048.utils.constants.ExecutorConstants;
+import hanu.a2_1801040048.utils.constants.HandlerConstants;
 
 public class CartProductsAdapter extends RecyclerView.Adapter<CartProductsAdapter.CartProductsHolder> {
     private ProductListCallback callback;
@@ -59,9 +58,9 @@ public class CartProductsAdapter extends RecyclerView.Adapter<CartProductsAdapte
         }
 
         private void bind(Product product) {
-            ExecutorConstants.executor.execute(() -> {
+            ExecutorConstants.getInstance().execute(() -> {
                 Bitmap bitmap = downloadImage(product.getThumbnail());
-                handler.post(() -> {
+                HandlerConstants.getInstance().post(() -> {
                     if (bitmap != null) {
                         binding.ivProductImage.setImageBitmap(bitmap);
                     }

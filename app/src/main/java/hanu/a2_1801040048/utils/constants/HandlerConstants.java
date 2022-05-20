@@ -4,5 +4,15 @@ import android.os.Handler;
 import android.os.Looper;
 
 public class HandlerConstants {
-    public static Handler handler = new Handler(Looper.getMainLooper());
+    private static Handler instance;
+    private HandlerConstants(){}
+
+    public static Handler getInstance(){
+        if(instance == null)
+            synchronized(HandlerConstants.class) {
+                if (instance == null)
+                    instance = new Handler(Looper.getMainLooper());
+            }
+        return instance;
+    }
 }

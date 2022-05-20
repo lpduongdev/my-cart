@@ -1,18 +1,13 @@
 package hanu.a2_1801040048;
 
 import static hanu.a2_1801040048.utils.Utils.loadJSON;
-import static hanu.a2_1801040048.utils.constants.HandlerConstants.handler;
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.View;
-import android.widget.EditText;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.json.JSONArray;
@@ -25,7 +20,7 @@ import hanu.a2_1801040048.adapters.HomeProductAdapter;
 import hanu.a2_1801040048.utils.constants.ExecutorConstants;
 import hanu.a2_1801040048.databinding.ActivityMainBinding;
 import hanu.a2_1801040048.models.Product;
-import hanu.a2_1801040048.utils.constants.KeyConstants;
+import hanu.a2_1801040048.utils.constants.HandlerConstants;
 
 public class MainActivity extends AppCompatActivity {
     private static final String URL = "https://mpr-cart-api.herokuapp.com/products";
@@ -51,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         initAdapter();
-        addAfterTextChangeListener(binding.edtSearchProduct);
+        initSearchListener();
     }
 
     private void setThreadPolicy() {
@@ -60,11 +55,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void fetchDataJSON() {
-        ExecutorConstants.executor.execute(() -> {
+        ExecutorConstants.getInstance().execute(() -> {
             String json = loadJSON(URL);
 
-            handler.post(() -> {
-                products.clear();
+            HandlerConstants.getInstance().post(() -> {
                 if (json != null)
                     try {
                         JSONArray jsonArray = new JSONArray(json);
@@ -85,22 +79,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void filterData() {
-        ArrayList<Product> newList = new ArrayList<>();
-        for (Product product : products)
-            if (product.getName().toLowerCase().contains(binding.edtSearchProduct.getText().toString().toLowerCase()))
-                newList.add(product);
-        homeProductAdapter.submitList(newList);
-    }
-
     private void initAdapter() {
         homeProductAdapter = new HomeProductAdapter();
         homeProductAdapter.submitList(products);
         binding.recyclerViewListHome.setAdapter(homeProductAdapter);
     }
 
-    private void addAfterTextChangeListener(EditText editText) {
-        editText.addTextChangedListener(new TextWatcher() {
+    private void initSearchListener() {
+        binding.edtSearchProduct.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -111,8 +97,17 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (editText.getText() != null) filterData();
+                if (binding.edtSearchProduct.getText() != null) filterData();
             }
         });
     }
+
+    private void filterData() {
+        ArrayList<Product> newList = new ArrayList<>();
+        for (Product product : products)
+            if (product.getName().toLowerCase().contains(binding.edtSearchProduct.getText().toString().toLowerCase()))
+                newList.add(product);
+        homeProductAdapter.submitList(newList);
+    }
+
 }

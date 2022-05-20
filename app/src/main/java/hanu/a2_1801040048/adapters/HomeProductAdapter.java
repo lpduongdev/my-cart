@@ -2,7 +2,6 @@ package hanu.a2_1801040048.adapters;
 
 import static hanu.a2_1801040048.utils.Utils.downloadImage;
 import static hanu.a2_1801040048.utils.Utils.priceConvert;
-import static hanu.a2_1801040048.utils.constants.HandlerConstants.handler;
 
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +19,7 @@ import java.util.ArrayList;
 
 import hanu.a2_1801040048.DetailsActivity;
 import hanu.a2_1801040048.db.CartManager;
+import hanu.a2_1801040048.utils.constants.HandlerConstants;
 import hanu.a2_1801040048.utils.constants.KeyConstants;
 import hanu.a2_1801040048.utils.constants.ExecutorConstants;
 import hanu.a2_1801040048.databinding.ProductItemBinding;
@@ -59,7 +59,7 @@ public class HomeProductAdapter extends RecyclerView.Adapter<HomeProductAdapter.
             binding.tvProductName.setText(product.getName());
             binding.tvProductPrice.setText(priceConvert(product.getUnitPrice()));
 
-            ExecutorConstants.executor.execute(() -> handler.post(() -> {
+            ExecutorConstants.getInstance().execute(() -> HandlerConstants.getInstance().post(() -> {
                 Bitmap bitmap = downloadImage(product.getThumbnail());
                 if (bitmap != null) binding.ivProductImage.setImageBitmap(bitmap);
             }));

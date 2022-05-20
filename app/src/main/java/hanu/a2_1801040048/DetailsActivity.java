@@ -2,7 +2,6 @@ package hanu.a2_1801040048;
 
 import static hanu.a2_1801040048.utils.Utils.downloadImage;
 import static hanu.a2_1801040048.utils.Utils.priceConvert;
-import static hanu.a2_1801040048.utils.constants.HandlerConstants.handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,6 +19,7 @@ import hanu.a2_1801040048.db.CartManager;
 import hanu.a2_1801040048.models.Product;
 import hanu.a2_1801040048.utils.Utils;
 import hanu.a2_1801040048.utils.constants.ExecutorConstants;
+import hanu.a2_1801040048.utils.constants.HandlerConstants;
 import hanu.a2_1801040048.utils.constants.KeyConstants;
 
 public class DetailsActivity extends AppCompatActivity {
@@ -36,7 +36,7 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     private void initView(Product product) {
-        ExecutorConstants.executor.execute(() -> handler.post(() -> {
+        ExecutorConstants.getInstance().execute(() -> HandlerConstants.getInstance().post(() -> {
             Bitmap bitmap = downloadImage(product.getThumbnail());
             if (bitmap != null) binding.ivProductImage.setImageBitmap(bitmap);
         }));
