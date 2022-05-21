@@ -1,19 +1,15 @@
 package hanu.a2_1801040048;
 
-import static hanu.a2_1801040048.utils.Utils.downloadImage;
 import static hanu.a2_1801040048.utils.Utils.priceConvert;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.widget.Toast;
 
-import java.util.regex.Pattern;
 
-import hanu.a2_1801040048.databinding.ActivityCartBinding;
 import hanu.a2_1801040048.databinding.ActivityDetailsBinding;
 import hanu.a2_1801040048.db.CartManager;
 import hanu.a2_1801040048.models.Product;
@@ -36,10 +32,13 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     private void initView(Product product) {
-        ExecutorConstants.getInstance().execute(() -> HandlerConstants.getInstance().post(() -> {
-            Bitmap bitmap = downloadImage(product.getThumbnail());
-            if (bitmap != null) binding.ivProductImage.setImageBitmap(bitmap);
-        }));
+        ExecutorConstants.getInstance().execute(() -> {
+            Bitmap bitmap = Utils.downloadImage(product.getThumbnail());
+
+            HandlerConstants.getInstance().post(() -> {
+                if (bitmap != null) binding.ivProductImage.setImageBitmap(bitmap);
+            });
+        });
 
         binding.tvProductName.setText(product.getName());
         binding.tvProductPrice.setText(priceConvert(product.getUnitPrice() + ""));

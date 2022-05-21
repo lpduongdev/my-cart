@@ -1,20 +1,19 @@
 package hanu.a2_1801040048.utils;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.NumberFormat;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
-import hanu.a2_1801040048.MainActivity;
 import hanu.a2_1801040048.models.Product;
+import hanu.a2_1801040048.utils.constants.KeyConstants;
 
 public class Utils {
 
@@ -24,8 +23,7 @@ public class Utils {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.connect();
             InputStream is = connection.getInputStream();
-            Bitmap bitmap = BitmapFactory.decodeStream(is);
-            return bitmap;
+            return BitmapFactory.decodeStream(is);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -75,5 +73,17 @@ public class Utils {
                 productTemp[2],
                 productTemp[3]);
 
+    }
+
+    public static void switchActivity(Context baseContext, Class<?> destinationClass, Product product) {
+        Intent intent = new Intent(baseContext, destinationClass);
+        if (product != null)
+            intent.putExtra(KeyConstants.PRODUCT_DETAILS,
+                    product.getId() + "$|" +
+                            product.getThumbnail() + "$|" +
+                            product.getName() + "$|" +
+                            product.getUnitPrice() + "$|");
+
+        baseContext.startActivity(intent);
     }
 }

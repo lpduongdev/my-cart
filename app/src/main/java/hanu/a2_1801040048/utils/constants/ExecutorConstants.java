@@ -13,7 +13,7 @@ public class ExecutorConstants {
 
     public static Executor getInstance(){
         if(instance == null)
-            synchronized(HandlerConstants.class) {
+            synchronized(ExecutorConstants.class) {
                 if (instance == null)
                     instance = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()*2);
             }

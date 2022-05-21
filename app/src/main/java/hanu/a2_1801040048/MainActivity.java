@@ -4,7 +4,6 @@ import static hanu.a2_1801040048.utils.Utils.loadJSON;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextWatcher;
 
@@ -34,24 +33,18 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        setThreadPolicy();
-
         products = new ArrayList<>();
-
-        fetchDataJSON();
 
         binding.btnCart.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, CartActivity.class);
             startActivity(intent);
         });
 
-        initAdapter();
         initSearchListener();
-    }
 
-    private void setThreadPolicy() {
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
+        fetchDataJSON();
+
+        initAdapter();
     }
 
     private void fetchDataJSON() {

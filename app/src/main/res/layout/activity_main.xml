@@ -62,6 +62,7 @@
             android:layout_height="@dimen/search_bar_height"
             android:layout_gravity="center"
             android:layout_weight="8"
+            android:textCursorDrawable="@null"
             android:background="@android:color/transparent"
             android:hint="@string/search_bar_hint"
             android:textColor="@color/title_product" />

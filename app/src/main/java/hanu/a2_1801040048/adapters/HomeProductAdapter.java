@@ -1,10 +1,8 @@
 package hanu.a2_1801040048.adapters;
 
-import static hanu.a2_1801040048.utils.Utils.downloadImage;
 import static hanu.a2_1801040048.utils.Utils.priceConvert;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -19,13 +17,13 @@ import java.util.ArrayList;
 
 import hanu.a2_1801040048.DetailsActivity;
 import hanu.a2_1801040048.db.CartManager;
+import hanu.a2_1801040048.utils.Utils;
 import hanu.a2_1801040048.utils.constants.HandlerConstants;
-import hanu.a2_1801040048.utils.constants.KeyConstants;
 import hanu.a2_1801040048.utils.constants.ExecutorConstants;
 import hanu.a2_1801040048.databinding.ProductItemBinding;
 import hanu.a2_1801040048.models.Product;
 
-public class HomeProductAdapter extends RecyclerView.Adapter<HomeProductAdapter.HomeProductHolder> {
+public class    HomeProductAdapter extends RecyclerView.Adapter<HomeProductAdapter.HomeProductHolder> {
 
     private static final DiffUtil.ItemCallback<Product> DIFF_CALLBACK = new DiffUtil.ItemCallback<Product>() {
         @Override
@@ -56,38 +54,45 @@ public class HomeProductAdapter extends RecyclerView.Adapter<HomeProductAdapter.
         }
 
         public void bind(Product product) {
+
+            initImage(product);
+            initText(product);
+            initBtnListener(product);
+
+        }
+
+        private void initImage(Product product) {
+            ExecutorConstants.getInstance().execute(() -> {
+                Bitmap bitmap = Utils.downloadImage(product.getThumbnail());
+
+                HandlerConstants.getInstance().post(() -> {
+                    if (bitmap != null) binding.ivProductImage.setImageBitmap(bitmap);
+                });
+            });
+        }
+
+        private void initText(Product product) {
             binding.tvProductName.setText(product.getName());
             binding.tvProductPrice.setText(priceConvert(product.getUnitPrice()));
 
-            ExecutorConstants.getInstance().execute(() -> HandlerConstants.getInstance().post(() -> {
-                Bitmap bitmap = downloadImage(product.getThumbnail());
-                if (bitmap != null) binding.ivProductImage.setImageBitmap(bitmap);
-            }));
+        }
 
+        private void initBtnListener(Product product) {
             binding.btnAddToCart.setOnClickListener(v -> {
+                int currentQuantity = product.getQuantity();
+                Product dbProduct = CartManager.getInstance(context).getProductById(product.getId());
+                if (dbProduct != null) currentQuantity = dbProduct.getQuantity();
                 CartManager.getInstance(context).addProduct(new Product(
                         product.getId(),
                         product.getThumbnail(),
                         product.getName(),
                         product.getUnitPrice(),
-                        product.getQuantity() + 1
+                        currentQuantity + 1
                 ));
                 Toast.makeText(context, "Added item to cart", Toast.LENGTH_SHORT).show();
             });
-            binding.tvProductName.setOnClickListener(v -> initIntentToDetails(product));
-            binding.ivProductImage.setOnClickListener(v -> initIntentToDetails(product));
-
-        }
-
-        void initIntentToDetails(Product product) {
-            Intent intent = new Intent(context, DetailsActivity.class);
-            intent.putExtra(KeyConstants.PRODUCT_DETAILS,
-                    product.getId() + "$|" +
-                            product.getThumbnail() + "$|" +
-                            product.getName() + "$|" +
-                            product.getUnitPrice() + "$|");
-
-            context.startActivity(intent);
+            binding.tvProductName.setOnClickListener(v -> Utils.switchActivity(context, DetailsActivity.class, product));
+            binding.ivProductImage.setOnClickListener(v -> Utils.switchActivity(context, DetailsActivity.class, product));
         }
     }
 
